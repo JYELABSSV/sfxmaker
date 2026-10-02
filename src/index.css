@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+.font-pixel {
+  font-family: 'Press Start 2P', monospace;
+}
+
+.font-silkscreen {
+  font-family: 'Silkscreen', monospace;
+}
+
+.font-display {
+  font-family: 'Chakra Petch', 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Cute Retro Stardust & Dot Grid */
+.bg-cute-canvas {
+  background-color: #0b0918;
+  background-image: 
+    radial-gradient(rgba(244, 114, 182, 0.18) 1.5px, transparent 1.5px),
+    radial-gradient(rgba(56, 189, 248, 0.14) 1.5px, transparent 1.5px);
+  background-size: 24px 24px, 48px 48px;
+  background-position: 0 0, 12px 12px;
+}
+
+/* Cute Chunky Pixel Shadows */
+.pixel-toy-card {
+  box-shadow: 0 6px 0px #090714, 0 10px 20px rgba(0, 0, 0, 0.45);
+}
+
+.pixel-toy-btn {
+  box-shadow: 0 5px 0px #090714;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.pixel-toy-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 0px #090714;
+}
+
+.pixel-toy-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0px #090714;
+}
+
+/* CRT Screen Scanlines */
+.scanlines {
+  background: linear-gradient(
+    rgba(18, 16, 28, 0) 50%, 
+    rgba(0, 0, 0, 0.28) 50%
+  );
+  background-size: 100% 4px;
+}
+
+/* Custom retro range slider with cute candy thumb */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #151228;
+  border: 2px solid #2d264f;
+  border-radius: 9999px;
+  height: 8px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: #facc15;
+  box-shadow: 0 3px 0 #713f12;
+  cursor: pointer;
+  border: 2px solid #0f172a;
+  transition: transform 0.08s ease, background-color 0.1s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #fde047;
+  transform: scale(1.15);
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(0.95);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: #facc15;
+  box-shadow: 0 3px 0 #713f12;
+  cursor: pointer;
+  border: 2px solid #0f172a;
+  transition: transform 0.08s ease, background-color 0.1s ease;
+}
+
+@keyframes cute-bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-cute-bounce {
+  animation: cute-bounce-slow 2.4s ease-in-out infinite;
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Retro SFX Synthesizer",
+  "description": "Web Audio API 기반 레트로 게임 효과음 생성 및 커스텀 WAV 다운로더",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
