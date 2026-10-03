@@ -16,7 +16,9 @@ import { WaveformGraphEditor } from './components/WaveformGraphEditor';
 import { SoundEditor } from './components/SoundEditor';
 import { PitchAudition } from './components/PitchAudition';
 import { SoundHistory } from './components/SoundHistory';
+import { TermsGuideModal } from './components/TermsGuideModal';
 import { useTranslation } from './i18n/LanguageContext';
+import { LEGAL_TRANSLATIONS } from './i18n/legalTranslations';
 import {
   Play,
   Shuffle,
@@ -26,10 +28,18 @@ import {
 } from 'lucide-react';
 
 export default function App() {
-  const { t } = useTranslation();
+  const { t, effectiveLanguage } = useTranslation();
+  const legal = LEGAL_TRANSLATIONS[effectiveLanguage] || LEGAL_TRANSLATIONS.en;
   const [params, setParams] = useState<SFXParams>(PRESETS[0]);
   const [isMuted, setIsMuted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
+  const [legalModalTab, setLegalModalTab] = useState<'terms' | 'privacy' | 'guide'>('terms');
+
+  const handleOpenLegalModal = (tab: 'terms' | 'privacy' | 'guide' = 'terms') => {
+    setLegalModalTab(tab);
+    setIsLegalModalOpen(true);
+  };
   const [history, setHistory] = useState<SoundHistoryItem[]>(() => [
     {
       id: 'init_jump',
@@ -197,6 +207,7 @@ export default function App() {
         isMuted={isMuted}
         onToggleMute={handleToggleMute}
         onPlayCurrent={() => playSound()}
+        onOpenTermsGuide={handleOpenLegalModal}
       />
 
       {/* Floating Free-Roaming Mascot Robot at the bottom right */}
@@ -292,7 +303,10 @@ export default function App() {
         {/* 상단 배치된 WAV 다운로드 패널 (With Bassist Robot freely jamming on top) */}
         <section id="export" className="relative pt-3">
           <ExportBassistRobot isPlaying={isPlaying} />
-          <ExportPanel params={{ ...params, name: displayedName }} />
+          <ExportPanel
+            params={{ ...params, name: displayedName }}
+            onOpenTerms={() => handleOpenLegalModal('terms')}
+          />
         </section>
 
         {/* 1. Presets Soundboard */}
@@ -351,19 +365,33 @@ export default function App() {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <a
-              href="https://privacy.jyelabs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-purple-300 hover:text-pink-300 underline underline-offset-2 transition-colors"
+            <button
+              type="button"
+              onClick={() => handleOpenLegalModal('terms')}
+              className="text-purple-300 hover:text-pink-300 underline underline-offset-2 transition-colors cursor-pointer"
             >
               {t.privacyAndTerms}
-            </a>
+            </button>
+            <span className="text-purple-800">·</span>
+            <button
+              type="button"
+              onClick={() => handleOpenLegalModal('guide')}
+              className="text-cyan-300 hover:text-cyan-200 underline underline-offset-2 transition-colors cursor-pointer"
+            >
+              {legal.tabGuide}
+            </button>
             <span className="text-purple-800 hidden sm:inline">|</span>
             <span className="text-purple-400">{t.footerShortcuts}</span>
           </div>
         </div>
       </footer>
+
+      {/* Terms of Service, Legal Disclaimer & Studio Guide Modal */}
+      <TermsGuideModal
+        isOpen={isLegalModalOpen}
+        initialTab={legalModalTab}
+        onClose={() => setIsLegalModalOpen(false)}
+      />
     </div>
   );
 }

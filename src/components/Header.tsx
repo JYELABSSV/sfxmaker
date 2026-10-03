@@ -1,16 +1,24 @@
 import React from 'react';
-import { Volume2, VolumeX, Play, ExternalLink } from 'lucide-react';
+import { Volume2, VolumeX, Play, ExternalLink, ShieldAlert } from 'lucide-react';
 import { useTranslation } from '../i18n/LanguageContext';
+import { LEGAL_TRANSLATIONS } from '../i18n/legalTranslations';
 import { LanguageSelector } from './LanguageSelector';
 
 interface HeaderProps {
   isMuted: boolean;
   onToggleMute: () => void;
   onPlayCurrent: () => void;
+  onOpenTermsGuide?: (tab?: 'terms' | 'privacy' | 'guide') => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ isMuted, onToggleMute, onPlayCurrent }) => {
-  const { t } = useTranslation();
+export const Header: React.FC<HeaderProps> = ({
+  isMuted,
+  onToggleMute,
+  onPlayCurrent,
+  onOpenTermsGuide,
+}) => {
+  const { t, effectiveLanguage } = useTranslation();
+  const legal = LEGAL_TRANSLATIONS[effectiveLanguage] || LEGAL_TRANSLATIONS.en;
 
   return (
     <header className="border-b-4 border-[#241c42] bg-[#0e0b20]/95 backdrop-blur-md sticky top-0 z-50 px-4 lg:px-8 py-3 shadow-[0_4px_0_#070510]">
@@ -47,6 +55,19 @@ export const Header: React.FC<HeaderProps> = ({ isMuted, onToggleMute, onPlayCur
 
         {/* Action Controls & Language Selector */}
         <div className="flex items-center gap-2">
+          {/* Terms & Guide Modal Button */}
+          {onOpenTermsGuide && (
+            <button
+              type="button"
+              onClick={() => onOpenTermsGuide('terms')}
+              title={legal.headerButton}
+              className="pixel-toy-btn flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#1b1535] border-2 border-[#3d3170] hover:border-amber-400 text-purple-200 hover:text-amber-300 font-pixel text-[10px] tracking-wide transition-all cursor-pointer"
+            >
+              <ShieldAlert className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span className="hidden sm:inline">{legal.headerButton}</span>
+            </button>
+          )}
+
           {/* Language Selector Dropdown with Flags */}
           <LanguageSelector />
 

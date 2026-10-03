@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import { SFXParams, ExportSettings } from '../types/sfx';
 import { sfxEngine } from '../audio/sfxEngine';
 import { formatFileSize } from '../audio/wavEncoder';
-import { Download, Check, Sparkles } from 'lucide-react';
+import { Download, Check, Sparkles, ShieldAlert } from 'lucide-react';
 import { useTranslation } from '../i18n/LanguageContext';
+import { LEGAL_TRANSLATIONS } from '../i18n/legalTranslations';
 
 interface ExportPanelProps {
   params: SFXParams;
+  onOpenTerms?: () => void;
 }
 
-export const ExportPanel: React.FC<ExportPanelProps> = ({ params }) => {
-  const { t } = useTranslation();
+export const ExportPanel: React.FC<ExportPanelProps> = ({ params, onOpenTerms }) => {
+  const { t, effectiveLanguage } = useTranslation();
+  const legal = LEGAL_TRANSLATIONS[effectiveLanguage] || LEGAL_TRANSLATIONS.en;
   const [settings, setSettings] = useState<ExportSettings>({
     sampleRate: 44100,
     bitDepth: 16,
@@ -146,6 +149,24 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ params }) => {
             )}
           </button>
         </div>
+      </div>
+
+      {/* Royalty-Free & Legal Disclaimer Quick Link */}
+      <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#261d4a] text-[10px] font-silkscreen text-purple-300/80">
+        <span className="flex items-center gap-1.5 text-emerald-300">
+          <span className="text-amber-400">★</span>
+          <span>100% Client-Side Web Audio Synth (WAV)</span>
+        </span>
+        {onOpenTerms && (
+          <button
+            type="button"
+            onClick={onOpenTerms}
+            className="flex items-center gap-1 text-amber-300 hover:text-pink-300 underline underline-offset-2 transition-colors cursor-pointer"
+          >
+            <ShieldAlert className="w-3 h-3 text-amber-400" />
+            <span>{legal.tabTerms}</span>
+          </button>
+        )}
       </div>
     </div>
   );
