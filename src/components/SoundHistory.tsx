@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SoundHistoryItem, SFXParams } from '../types/sfx';
+import { saveWav } from '../audio/saveWav';
 import { sfxEngine } from '../audio/sfxEngine';
 import { Play, Download, Star, Clock, Trash2, ArrowUpRight } from 'lucide-react';
 import { useTranslation } from '../i18n/LanguageContext';
@@ -18,21 +19,16 @@ export const SoundHistory: React.FC<SoundHistoryProps> = ({
   onClearHistory,
 }) => {
   const { t } = useTranslation();
+  const [exportError, setExportError] = useState<string | null>(null);
 
   const handleQuickDownload = async (item: SoundHistoryItem, e: React.MouseEvent) => {
     e.stopPropagation();
     try {
       const { blob } = await sfxEngine.renderToWav(item.params, 44100, 16);
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `sfx_${item.params.name.replace(/[^a-zA-Z0-9가-힣]/g, '_')}.wav`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      saveWav(blob, `sfx_${item.params.name.replace(/[^a-zA-Z0-9가-힣]/g, '_')}.wav`);
     } catch (err) {
       console.error('Failed to download from history:', err);
+      setExportError('WAV 저장을 요청하지 못했습니다. 다시 시도해 주세요. / Unable to export WAV. Please try again.');
     }
   };
 
@@ -56,6 +52,7 @@ export const SoundHistory: React.FC<SoundHistoryProps> = ({
 
   return (
     <div className="rounded-3xl border-4 border-[#2c2254] bg-[#141029]/95 p-5 pixel-toy-card space-y-4">
+      {exportError && <p role="alert" className="text-sm text-rose-300">{exportError}</p>}
       <div className="flex items-center justify-between border-b-2 border-[#261d4a] pb-2.5">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 bg-pink-400 rounded-full animate-bounce" />
@@ -134,3 +131,4 @@ export const SoundHistory: React.FC<SoundHistoryProps> = ({
     </div>
   );
 };
+

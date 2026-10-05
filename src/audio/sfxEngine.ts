@@ -1,10 +1,13 @@
 import { SFXParams } from '../types/sfx';
+import { getSoundDuration } from './duration';
 import { audioBufferToWav } from './wavEncoder';
 
 class SFXEngine {
   private ctx: AudioContext | null = null;
   private analyser: AnalyserNode | null = null;
   private isMuted: boolean = false;
+  private outputGain: GainNode | null = null;
+  private activeStop: (() => void) | null = null;
 
   private getAudioContext(): AudioContext | null {
     try {
@@ -17,7 +20,10 @@ class SFXEngine {
         this.analyser = this.ctx.createAnalyser();
         this.analyser.fftSize = 1024;
         this.analyser.smoothingTimeConstant = 0.75;
-        this.analyser.connect(this.ctx.destination);
+        this.outputGain = this.ctx.createGain();
+        this.outputGain.gain.value = this.isMuted ? 0 : 1;
+        this.analyser.connect(this.outputGain);
+        this.outputGain.connect(this.ctx.destination);
       }
       return this.ctx;
     } catch {
@@ -34,7 +40,14 @@ class SFXEngine {
 
   public setMuted(muted: boolean) {
     this.isMuted = muted;
+    if (this.ctx && this.outputGain) {
+      this.outputGain.gain.cancelScheduledValues(this.ctx.currentTime);
+      this.outputGain.gain.setTargetAtTime(muted ? 0 : 1, this.ctx.currentTime, 0.005);
+    }
+    if (muted) this.stop();
   }
+
+  public stop(): void { this.activeStop?.(); this.activeStop = null; }
 
   // Create BitCrush transfer curve for WaveShaperNode
   private createBitCrushCurve(bits: number): Float32Array | null {
@@ -77,21 +90,14 @@ class SFXEngine {
     pitchMultiplier = 1.0
   ): { duration: number; stop: () => void } {
     // For realtime context, add 15ms lookahead to ensure timestamps are never in the past
-    const isOffline = ctx instanceof (window.OfflineAudioContext || (window as unknown as { webkitOfflineAudioContext: typeof OfflineAudioContext }).webkitOfflineAudioContext);
+    const OfflineClass = window.OfflineAudioContext || (window as unknown as { webkitOfflineAudioContext: typeof OfflineAudioContext }).webkitOfflineAudioContext;
+    const isOffline = Boolean(OfflineClass && ctx instanceof OfflineClass);
     const t0 = isOffline ? 0 : ctx.currentTime + 0.015;
 
     const isMelody = Boolean(params.melodyNotes && params.melodyNotes.length > 0);
 
     // 1. Duration calculation
-    let totalDuration: number;
-    if (isMelody) {
-      totalDuration = params.melodyNotes!.reduce((sum, n) => sum + Math.max(0.04, n.duration), 0) + 0.1;
-    } else {
-      const attackTime = Math.max(0.003, params.attackTime);
-      const sustainTime = Math.max(0.03, params.sustainTime);
-      const decayTime = Math.max(0.08, params.decayTime);
-      totalDuration = attackTime + sustainTime + decayTime;
-    }
+    const totalDuration = getSoundDuration(params);
 
     // 2. Master Gain & FX chain (Filter & BitCrush)
     const masterGain = ctx.createGain();
@@ -127,7 +133,7 @@ class SFXEngine {
 
     if (params.waveType === 'noise') {
       const gainNode = ctx.createGain();
-      const peakVolume = Math.min(1.0, Math.max(0.05, params.masterVolume * (1 + params.punch * 0.4)));
+      const peakVolume = Math.min(1.0, Math.max(0.0001, params.masterVolume * (1 + params.punch * 0.4)));
 
       const noiseBuffer = this.createNoiseBuffer(ctx, totalDuration + 0.5);
       const noiseSource = ctx.createBufferSource();
@@ -154,7 +160,7 @@ class SFXEngine {
     } else if (isMelody) {
       // NOTE SEQUENCE (MELODIC ARPEGGIO): Coin, 1-UP, Victory, Powerup, Game Over
       const notes = params.melodyNotes!;
-      const peakVolume = Math.min(1.0, Math.max(0.08, params.masterVolume * (1 + params.punch * 0.3)));
+      const peakVolume = Math.min(1.0, Math.max(0.0001, params.masterVolume * (1 + params.punch * 0.3)));
       const activeOscillators: OscillatorNode[] = [];
       let elapsed = 0;
 
@@ -218,7 +224,7 @@ class SFXEngine {
     } else {
       // Monophonic Pitch Slide (Jump, Laser, Hit, Warp, etc.)
       const gainNode = ctx.createGain();
-      const peakVolume = Math.min(1.0, Math.max(0.05, params.masterVolume * (1 + params.punch * 0.4)));
+      const peakVolume = Math.min(1.0, Math.max(0.0001, params.masterVolume * (1 + params.punch * 0.4)));
 
       gainNode.connect(masterGain);
 
@@ -302,7 +308,7 @@ class SFXEngine {
     }
 
     return {
-      duration: totalDuration + 0.05,
+      duration: totalDuration,
       stop: sourceStop,
     };
   }
@@ -310,19 +316,23 @@ class SFXEngine {
   /**
    * Play real-time sound effect
    */
-  public play(params: SFXParams, pitchMultiplier = 1.0): void {
-    if (this.isMuted) return;
+  public play(params: SFXParams, pitchMultiplier = 1.0): number {
+    if (this.isMuted) return 0;
     try {
       const ctx = this.getAudioContext();
-      if (!ctx || !this.analyser) return;
+      if (!ctx || !this.analyser) return 0;
 
       if (ctx.state === 'suspended') {
         ctx.resume().catch(() => {});
       }
 
-      this.setupGraph(ctx, this.analyser, params, pitchMultiplier);
+      this.stop();
+      const graph = this.setupGraph(ctx, this.analyser, params, pitchMultiplier);
+      this.activeStop = graph.stop;
+      return graph.duration;
     } catch (err) {
       console.error('Playback error:', err);
+      return 0;
     }
   }
 
@@ -333,17 +343,9 @@ class SFXEngine {
     params: SFXParams,
     sampleRate: 44100 | 22050 | 11025 = 44100,
     bitDepth: 16 | 8 = 16
-  ): Promise<{ blob: Blob; url: string; sizeBytes: number; duration: number }> {
+  ): Promise<{ blob: Blob; sizeBytes: number; duration: number }> {
     try {
-      let totalDuration: number;
-      if (params.melodyNotes && params.melodyNotes.length > 0) {
-        totalDuration = params.melodyNotes.reduce((sum, n) => sum + Math.max(0.04, n.duration), 0) + 0.1;
-      } else {
-        const attackTime = Math.max(0.003, params.attackTime);
-        const sustainTime = Math.max(0.03, params.sustainTime);
-        const decayTime = Math.max(0.08, params.decayTime);
-        totalDuration = attackTime + sustainTime + decayTime + 0.08;
-      }
+      const totalDuration = getSoundDuration(params);
 
       const numSamples = Math.ceil(sampleRate * totalDuration);
 
@@ -351,17 +353,16 @@ class SFXEngine {
         window.OfflineAudioContext ||
         (window as unknown as { webkitOfflineAudioContext: typeof OfflineAudioContext }).webkitOfflineAudioContext;
 
+      if (!OfflineCtxClass) throw new Error('Offline audio rendering is not supported in this browser.');
       const offlineCtx = new OfflineCtxClass(1, numSamples, sampleRate);
 
       this.setupGraph(offlineCtx, offlineCtx.destination, params);
 
       const renderedBuffer = await offlineCtx.startRendering();
       const wavBlob = audioBufferToWav(renderedBuffer, bitDepth);
-      const url = URL.createObjectURL(wavBlob);
 
       return {
         blob: wavBlob,
-        url,
         sizeBytes: wavBlob.size,
         duration: totalDuration,
       };
@@ -373,3 +374,4 @@ class SFXEngine {
 }
 
 export const sfxEngine = new SFXEngine();
+

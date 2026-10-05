@@ -49,6 +49,10 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch {}
   };
 
+  useEffect(() => {
+    document.documentElement.lang = effectiveLanguage;
+  }, [effectiveLanguage]);
+
   const t = TRANSLATIONS[effectiveLanguage] || TRANSLATIONS.en;
 
   return (
@@ -74,3 +78,4 @@ export const useTranslation = () => {
 };
 
 export { LANGUAGES };
+

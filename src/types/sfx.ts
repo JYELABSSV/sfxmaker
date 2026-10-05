@@ -4,6 +4,7 @@ export type SlideCurve = 'linear' | 'exponential' | 'jump';
 
 export interface SFXParams {
   id: string;
+  sourcePresetId?: string;
   name: string;
   category: 'jump' | 'coin' | 'laser' | 'hit' | 'explosion' | 'powerup' | 'gameover' | 'blip' | 'magic' | 'secret' | 'dash' | 'alert' | 'level_up' | 'shield' | 'custom';
   
@@ -55,3 +56,4 @@ export interface SoundHistoryItem {
   timestamp: number;
   isFavorite?: boolean;
 }
+

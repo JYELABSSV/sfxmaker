@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { SFXParams, SoundHistoryItem } from './types/sfx';
 import { PRESETS, mutateParams, randomizeParams } from './audio/presets';
+import { getSoundDuration } from './audio/duration';
 import { sfxEngine } from './audio/sfxEngine';
 import { Header } from './components/Header';
 import { Visualizer } from './components/Visualizer';
@@ -60,6 +61,9 @@ export default function App() {
   ]);
 
   const paramsRef = useRef(params);
+  const playbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [playbackError, setPlaybackError] = useState<string | null>(null);
+  useEffect(() => () => { if (playbackTimer.current) clearTimeout(playbackTimer.current); sfxEngine.stop(); }, []);
   useEffect(() => {
     paramsRef.current = params;
   }, [params]);
@@ -71,7 +75,7 @@ export default function App() {
       return t[key] as string;
     }
     if (p.id.startsWith('custom_')) {
-      const basePreset = PRESETS.find((base) => base.category === p.category);
+      const basePreset = PRESETS.find((base) => base.id === p.sourcePresetId);
       if (basePreset) {
         const baseKey = `preset_${basePreset.id}` as keyof typeof t;
         const baseName = (t[baseKey] as string) || basePreset.name;
@@ -88,13 +92,12 @@ export default function App() {
   // Sound playback trigger
   const playSound = useCallback((soundToPlay?: SFXParams) => {
     const target = soundToPlay || paramsRef.current;
-    sfxEngine.play(target);
+    if (playbackTimer.current) clearTimeout(playbackTimer.current);
+    const durationSec = sfxEngine.play(target);
+    if (!durationSec) { setIsPlaying(false); setPlaybackError('소리를 재생하지 못했습니다. 음소거 설정과 브라우저 오디오 지원을 확인하세요. / Unable to play audio. Check mute and browser support.'); return; }
+    setPlaybackError(null);
     setIsPlaying(true);
-    const durationSec = target.melodyNotes && target.melodyNotes.length > 0
-      ? target.melodyNotes.reduce((sum, n) => sum + n.duration, 0) + target.decayTime
-      : target.attackTime + target.sustainTime + target.decayTime;
-    const durationMs = (durationSec + 0.1) * 1000;
-    setTimeout(() => setIsPlaying(false), Math.min(3000, durationMs));
+    playbackTimer.current = setTimeout(() => setIsPlaying(false), (durationSec + 0.03) * 1000);
   }, []);
 
   // Preset selector
@@ -121,6 +124,7 @@ export default function App() {
           id: `hist_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
           params: itemParams,
           timestamp: Date.now(),
+          isFavorite: prev.find(item => item.params.id === itemParams.id)?.isFavorite,
         },
         ...filtered,
       ].slice(0, 12);
@@ -148,7 +152,7 @@ export default function App() {
 
   // Reset to original preset
   const handleReset = () => {
-    const original = PRESETS.find((p) => p.category === params.category) || PRESETS[0];
+    const original = PRESETS.find((p) => p.id === (params.sourcePresetId || params.id)) || PRESETS[0];
     setParams(original);
     playSound(original);
   };
@@ -158,6 +162,7 @@ export default function App() {
     const nextMuted = !isMuted;
     setIsMuted(nextMuted);
     sfxEngine.setMuted(nextMuted);
+    if (nextMuted) setIsPlaying(false);
   };
 
   // Toggle favorite in history
@@ -175,7 +180,7 @@ export default function App() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const activeTag = (document.activeElement?.tagName || '').toLowerCase();
-      if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select') {
+      if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select' || activeTag === 'button' || activeTag === 'a' || isLegalModalOpen || (document.activeElement as HTMLElement | null)?.isContentEditable) {
         return;
       }
 
@@ -191,13 +196,9 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [playSound, handleMutate, handleRandomize]);
+  }, [playSound, handleMutate, handleRandomize, isLegalModalOpen]);
 
-  const activeDuration = (
-    params.melodyNotes && params.melodyNotes.length > 0
-      ? params.melodyNotes.reduce((sum, n) => sum + n.duration, 0) + params.decayTime
-      : params.attackTime + params.sustainTime + params.decayTime
-  ).toFixed(2);
+  const activeDuration = getSoundDuration(params).toFixed(2);
 
   const displayedName = getLocalizedSoundName(params);
 
@@ -213,6 +214,7 @@ export default function App() {
       {/* Floating Free-Roaming Mascot Robot at the bottom right */}
       <FloatingBoomboxBot isPlaying={isPlaying} />
 
+      {playbackError && <p role="alert" className="max-w-5xl mx-auto p-4 text-amber-200">{playbackError}</p>}
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 py-8 space-y-6">
         {/* Top Retro Console: Monitor & Push Controls with Free-Standing Musical Robots */}
         <section id="monitor" className="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch pt-3">
@@ -348,6 +350,7 @@ export default function App() {
       </main>
 
       {/* Retro Footnote with JYE SOUNDS and Privacy Policy & Terms Link */}
+      <section className="max-w-5xl mx-auto px-4 py-6 text-sm text-purple-200 leading-relaxed" aria-label="Studio guide"><h1 className="text-lg font-bold">8-BIT SFX LAB · 브라우저 효과음 제작기</h1><p>프리셋을 선택하고 주파수·엔벨로프를 조절한 뒤 WAV로 저장하세요. 오디오 합성은 브라우저에서 처리됩니다. / Choose a preset, adjust pitch and envelope, then export a WAV. Audio is synthesized in your browser.</p><nav className="flex flex-wrap gap-4 mt-3"><a href="/guides/">이용 가이드 / Guide</a><a href="/privacy/">개인정보 / Privacy</a><a href="/terms/">약관 / Terms</a><a href="/license/">음원 이용조건 / License</a><a href="/contact/">문의 / Contact</a></nav></section>
       <footer className="border-t-4 border-[#241c42] bg-[#0e0b20] py-5 px-4 text-center font-silkscreen text-[11px] text-purple-400/80 shadow-[0_-4px_0_#070510]">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 text-purple-300">
@@ -355,7 +358,7 @@ export default function App() {
             <span>{t.footerDesc}</span>
             <span>·</span>
             <a
-              href="https://jyesounds.com"
+              href="https://www.jyesounds.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-amber-300 hover:text-amber-200 font-bold underline underline-offset-2 transition-colors whitespace-nowrap"
@@ -395,3 +398,4 @@ export default function App() {
     </div>
   );
 }
+
