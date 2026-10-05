@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { SFXParams, ExportSettings } from '../types/sfx';
+import { saveWav } from '../audio/saveWav';
 import { sfxEngine } from '../audio/sfxEngine';
+import { getSoundDuration } from '../audio/duration';
 import { formatFileSize } from '../audio/wavEncoder';
 import { Download, Check, Sparkles, ShieldAlert } from 'lucide-react';
 import { useTranslation } from '../i18n/LanguageContext';
@@ -20,6 +22,7 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ params, onOpenTerms })
     format: 'wav',
   });
   const [isExporting, setIsExporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
 
   // Safe filename
@@ -32,32 +35,23 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ params, onOpenTerms })
 
   const effectiveFilename = (customName.trim() || defaultFilename) + '.wav';
 
-  const duration = Math.max(
-    0.1,
-    params.melodyNotes && params.melodyNotes.length > 0
-      ? params.melodyNotes.reduce((sum, n) => sum + n.duration, 0) + params.decayTime
-      : params.attackTime + params.sustainTime + params.decayTime + 0.08
-  );
+  const duration = getSoundDuration(params);
   const estimatedBytes = 44 + Math.ceil(duration * settings.sampleRate * (settings.bitDepth / 8));
 
   const handleDownloadWav = async () => {
     try {
+      setExportError(null);
+      setDownloadSuccess(false);
       setIsExporting(true);
       const { blob } = await sfxEngine.renderToWav(params, settings.sampleRate, settings.bitDepth);
 
-      const downloadUrl = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = downloadUrl;
-      a.download = effectiveFilename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(downloadUrl);
+      saveWav(blob, effectiveFilename);
 
       setDownloadSuccess(true);
       setTimeout(() => setDownloadSuccess(false), 2500);
     } catch (err) {
       console.error('Failed to export WAV:', err);
+      setExportError('WAV 저장을 요청하지 못했습니다. 다시 시도해 주세요. / Unable to export WAV. Please try again.');
     } finally {
       setIsExporting(false);
     }
@@ -134,7 +128,7 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ params, onOpenTerms })
             {downloadSuccess ? (
               <>
                 <Check className="w-4 h-4 text-emerald-950 stroke-[3]" />
-                <span>{t.saved} ♥</span>
+                <span>{effectiveLanguage === 'ko' ? '저장 요청됨' : 'Save requested'} ♥</span>
               </>
             ) : isExporting ? (
               <>
@@ -151,6 +145,7 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ params, onOpenTerms })
         </div>
       </div>
 
+      {exportError && <p role="alert" className="text-sm text-rose-300">{exportError}</p>}
       {/* Royalty-Free & Legal Disclaimer Quick Link */}
       <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#261d4a] text-[10px] font-silkscreen text-purple-300/80">
         <span className="flex items-center gap-1.5 text-emerald-300">
@@ -171,3 +166,4 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ params, onOpenTerms })
     </div>
   );
 };
+

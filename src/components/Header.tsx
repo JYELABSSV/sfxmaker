@@ -27,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-3">
           {/* Official JYE SOUNDS Link Button with Cute Golden Star Badge */}
           <a
-            href="https://jyesounds.com"
+            href="https://www.jyesounds.com/"
             target="_blank"
             rel="noopener noreferrer"
             title="Visit JYE SOUNDS Official Website"
@@ -99,3 +99,4 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
+

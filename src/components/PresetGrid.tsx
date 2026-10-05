@@ -1,3 +1,4 @@
+import { getSoundDuration } from '../audio/duration';
 import React from 'react';
 import { SFXParams } from '../types/sfx';
 import { PRESETS } from '../audio/presets';
@@ -92,7 +93,7 @@ export const PresetGrid: React.FC<PresetGridProps> = ({ currentParams, onSelectP
                   {localizedName}
                 </div>
                 <div className="font-mono text-[10px] text-purple-400/90 truncate mt-0.5">
-                  {preset.waveType.slice(0, 3).toUpperCase()} · {(preset.attackTime + preset.sustainTime + preset.decayTime).toFixed(2)}s
+                  {preset.waveType.slice(0, 3).toUpperCase()} · {getSoundDuration(preset).toFixed(2)}s
                 </div>
               </div>
             </button>
@@ -102,3 +103,4 @@ export const PresetGrid: React.FC<PresetGridProps> = ({ currentParams, onSelectP
     </div>
   );
 };
+

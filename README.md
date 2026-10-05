@@ -1,20 +1,19 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# JYE SOUNDS · SFX Studio
 
-# Run and deploy your AI Studio app
+## Development
 
-This contains everything you need to run your app locally.
+Install dependencies with npm install. Run npm run dev.
 
-View your app in AI Studio: https://ai.studio/apps/2684a329-9ffa-44c3-b62e-421ceccd07dd
+## Build and validation
 
-## Run Locally
+Run npm run lint and npm run build. The build produces the app, directly accessible bilingual policy and guide pages, robots.txt, sitemap.xml and a real 404.html in dist. Deploy the dist directory using the existing Cloudflare Pages Git integration.
 
-**Prerequisites:**  Node.js
+Site descriptions and policy pages are in content/site-pages.json; update the modal summaries at the same time. Statements about rights, privacy, analytics and availability must match actual operation.
 
+## Operational checks
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- Confirm the AdSense publisher ID against the actual account (main library only).
+- Check Privacy & messaging / Google-certified CMP settings before serving personalized ads in applicable regions.
+- Review Cloudflare bot/firewall rules for crawler access.
+- Keep source and permission records for distributed audio; these are not proven by application code.
+- Validate download, playback, direct page URLs, mobile layout and the generated sitemap after deployment.

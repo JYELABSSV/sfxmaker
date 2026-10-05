@@ -72,7 +72,7 @@ export function audioBufferToWav(
     for (let i = 0; i < numSamples; i++) {
       let s = Math.max(-1, Math.min(1, channelData[i]));
       // Map [-1, 1] to [0, 255]
-      const val = Math.floor((s + 1) * 127.5);
+      const val = Math.round((s + 1) * 127.5);
       view.setUint8(offset, Math.max(0, Math.min(255, val)));
       offset += 1;
     }
@@ -85,3 +85,4 @@ export function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   return `${(bytes / 1024).toFixed(1)} KB`;
 }
+

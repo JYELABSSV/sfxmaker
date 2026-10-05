@@ -1,3 +1,4 @@
+import { getSoundDuration } from '../audio/duration';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { SFXParams } from '../types/sfx';
 import { useTranslation } from '../i18n/LanguageContext';
@@ -79,12 +80,7 @@ export const WaveformGraphEditor: React.FC<WaveformGraphEditorProps> = ({
   );
 
   // Total sound duration
-  const totalSoundTime = Math.max(
-    0.15,
-    params.melodyNotes && params.melodyNotes.length > 0
-      ? params.melodyNotes.reduce((sum, n) => sum + n.duration, 0) + params.decayTime
-      : params.attackTime + params.sustainTime + params.decayTime
-  );
+  const totalSoundTime = getSoundDuration(params);
 
   // Time to SVG X
   const timeToX = useCallback(
@@ -1188,3 +1184,4 @@ export const WaveformGraphEditor: React.FC<WaveformGraphEditorProps> = ({
     </div>
   );
 };
+

@@ -1,0 +1,310 @@
+{
+  "privacy": {
+    "ko": {
+      "title": "개인정보처리방침",
+      "intro": "JYE SOUNDS 라이브러리와 BGM·SFX 제작 도구의 정보 처리 안내입니다.",
+      "sections": [
+        [
+          "오디오와 브라우저 저장",
+          "BGM 및 SFX 합성·WAV 내보내기는 브라우저에서 처리합니다. 언어 선택, 즐겨찾기 및 BGM 사용자 프리셋은 기기의 로컬 저장소에 저장될 수 있습니다. 브라우저의 사이트 데이터 삭제 기능으로 지울 수 있습니다. SFX 보관함은 현재 열린 세션에서만 유지됩니다."
+        ],
+        [
+          "사이트 접속 및 외부 서비스",
+          "페이지와 음원 전달을 위해 Cloudflare를 사용하고, 일부 페이지는 Google Fonts를 요청합니다. 이러한 요청에는 IP 주소와 브라우저 정보 등이 포함될 수 있습니다. 호스팅의 보안·접속 로그 및 활성화된 분석 기능은 관련 제공자의 정책에 따라 처리될 수 있습니다. 회원가입이 없다는 사실이 모든 접속 정보가 전송되지 않는다는 뜻은 아닙니다."
+        ],
+        [
+          "Google 광고",
+          "메인 라이브러리에는 Google AdSense 코드가 포함되어 있습니다. Google과 광고 파트너는 광고 제공·측정 및 부정 트래픽 방지를 위해 쿠키, 웹 비콘, IP 주소 또는 기타 식별자를 사용할 수 있습니다. 맞춤 광고는 방문 기록과 해당 지역의 동의 요건에 따라 제공될 수 있습니다. Google 광고 설정과 브라우저 설정에서 관련 선택을 관리할 수 있습니다."
+        ],
+        [
+          "문의 이메일",
+          "이메일 문의를 보내면 작성한 이름, 회신 주소, 내용 및 첨부 자료가 이메일 서비스로 전송됩니다. 문의와 권리 확인에 필요한 내용만 보내 주세요. 문의 처리 및 자료 삭제 요청은 lbhl7585@naver.com으로 연락해 주세요."
+        ],
+        [
+          "관련 안내",
+          "Google의 파트너 사이트 데이터 사용 안내: https://policies.google.com/technologies/partner-sites · 광고 설정: https://adssettings.google.com · Cloudflare 개인정보 안내: https://www.cloudflare.com/privacypolicy/"
+        ]
+      ]
+    },
+    "en": {
+      "title": "Privacy policy",
+      "intro": "Information handling for the JYE SOUNDS library and the BGM and SFX tools.",
+      "sections": [
+        [
+          "Audio and browser storage",
+          "The BGM and SFX tools synthesize audio and export WAV files in your browser. Language, library favorites and saved BGM presets may use local browser storage. Clear the site data in your browser to remove it. The SFX history currently lasts only for the open session."
+        ],
+        [
+          "Hosting and external services",
+          "Pages and library audio are delivered through Cloudflare. Some pages request Google Fonts. These requests can include IP addresses and browser information. Hosting security logs and enabled analytics may be processed under the providers’ policies. Having no account registration does not mean that no connection information is transmitted."
+        ],
+        [
+          "Google advertising",
+          "The main library includes Google AdSense code. Google and advertising partners may use cookies, web beacons, IP addresses or other identifiers to serve and measure ads and prevent invalid traffic. Personalized advertising depends on visit history and applicable consent requirements. Manage your choices in Google Ads Settings and your browser settings."
+        ],
+        [
+          "Email inquiries",
+          "When you send an inquiry, your name, reply address, message and attachments are sent through your email service. Send only what is necessary to answer the inquiry or verify rights. Contact lbhl7585@naver.com for inquiry handling or a request to delete submitted materials."
+        ],
+        [
+          "Provider information",
+          "Google partner-site data information: https://policies.google.com/technologies/partner-sites · Ads settings: https://adssettings.google.com · Cloudflare privacy policy: https://www.cloudflare.com/privacypolicy/"
+        ]
+      ]
+    }
+  },
+  "license": {
+    "ko": {
+      "title": "음원 이용조건",
+      "intro": "라이브러리 파일과 제작 도구에서 만든 오디오의 이용 범위를 구분해 확인해 주세요.",
+      "sections": [
+        [
+          "라이브러리 다운로드 파일",
+          "JYE SOUNDS는 제공하는 라이브러리 음원을 동영상, 게임, 방송, 광고 등 상업적·비상업적 창작물의 구성요소로 사용할 수 있도록 제공합니다. 자르기, 반복, 음량·피치 조절 등 편집을 허용하며 출처 표기는 권장 사항입니다."
+        ],
+        [
+          "라이브러리 파일의 제한",
+          "라이브러리 파일 자체를 단독 음원이나 스톡 라이브러리로 재판매·재배포하거나 제3자 음원 사이트에 그대로 등록하는 행위는 허용하지 않습니다. 공유 음원을 독점 소유한 것처럼 Content ID 또는 권리 관리 시스템에 등록해 다른 이용자에게 클레임을 제기하지 마세요. 이 조건은 CC0 표기가 아닌 JYE SOUNDS의 자체 이용조건입니다."
+        ],
+        [
+          "BGM·SFX 제작 도구의 출력",
+          "브라우저 도구에서 합성·녹음한 오디오를 동영상, 게임, 방송 등 상업적·비상업적 창작물에 무료로 사용할 수 있습니다. 이 이용 안내는 도구의 소스 코드나 사이트 디자인을 재배포할 권한을 부여하는 것은 아닙니다."
+        ],
+        [
+          "플랫폼의 자동 매칭",
+          "사용 허용과 제3자 플랫폼의 자동 판정은 별개입니다. 잘못된 등록이나 자동 매칭으로 클레임이 발생할 수 있으며, 플랫폼 수익 창출이나 클레임 부재를 보증하지 않습니다. 외부에서 추가한 음원·샘플은 해당 권리자의 이용조건도 확인해 주세요."
+        ],
+        [
+          "권리 확인 및 신고",
+          "라이선스 문의나 권리 침해 신고는 음원 이름, 파일 주소, 관련 플랫폼 주소 및 확인 자료를 포함해 lbhl7585@naver.com으로 보내 주세요. 운영자는 확인 가능한 자료를 검토해 안내합니다."
+        ]
+      ]
+    },
+    "en": {
+      "title": "Audio use conditions",
+      "intro": "Review the conditions for library files separately from audio made with the browser tools.",
+      "sections": [
+        [
+          "Downloaded library files",
+          "JYE SOUNDS makes its library audio available as part of commercial and noncommercial creative projects, including videos, games, broadcasts and advertisements. Trimming, looping, volume adjustment and pitch editing are permitted. Attribution is appreciated but not required."
+        ],
+        [
+          "Library restrictions",
+          "Do not resell or redistribute library files as standalone audio or stock libraries, or upload the original files to other sound libraries. Do not register shared audio as exclusively owned in Content ID or other rights-management systems to make claims against other users. These are JYE SOUNDS use conditions, not a CC0 dedication."
+        ],
+        [
+          "BGM and SFX tool output",
+          "Audio synthesized or recorded with the browser tools can be used free of charge in commercial and noncommercial videos, games and broadcasts. This permission does not grant a right to redistribute the tools’ source code or website design."
+        ],
+        [
+          "Platform matching",
+          "Permission to use audio is separate from a platform’s automated decisions. Incorrect registrations or automated matches can still produce claims. Claim-free use and platform monetization are not guaranteed. Check separate permissions for any outside samples or music that you add."
+        ],
+        [
+          "Rights inquiries",
+          "Send the sound name, file URL, relevant platform URL and supporting materials to lbhl7585@naver.com for license questions or infringement reports. The operator will review available materials and respond."
+        ]
+      ]
+    }
+  },
+  "terms": {
+    "ko": {
+      "title": "서비스 이용약관",
+      "intro": "라이브러리 검색·미리듣기·다운로드와 브라우저 오디오 제작 도구의 이용 안내입니다.",
+      "sections": [
+        [
+          "서비스",
+          "회원가입 없이 라이브러리를 탐색하거나 BGM·SFX 도구를 이용할 수 있습니다. 오디오 재생과 제작 기능에는 JavaScript와 지원되는 브라우저가 필요합니다."
+        ],
+        [
+          "음원 이용",
+          "라이브러리 및 제작 도구 오디오의 허용 범위는 음원 이용조건 페이지에서 확인해 주세요. 외부에 추가한 자료의 권리는 이용자가 확인해야 합니다."
+        ],
+        [
+          "정상적인 이용",
+          "서비스를 공격하거나 과도한 요청으로 방해하지 마세요. 다른 이용자에게 허위 권리 주장을 하거나 타인의 개인정보를 문의 양식에 불필요하게 포함하지 마세요."
+        ],
+        [
+          "이용상 한계",
+          "브라우저, 기기와 외부 플랫폼에 따라 재생·다운로드·수익 창출 결과가 달라질 수 있습니다. 기능 변경이나 장애가 있을 수 있으며, 중요한 설정과 오디오 파일은 별도로 보관해 주세요. 이 안내는 관련 법률에 따른 이용자의 권리를 배제하지 않습니다."
+        ],
+        [
+          "문의",
+          "기능 오류, 이용조건 또는 권리 확인 문의: lbhl7585@naver.com. 이름과 주소가 정확한 음원 및 재현 절차를 알려 주시면 확인에 도움이 됩니다."
+        ]
+      ]
+    },
+    "en": {
+      "title": "Terms of use",
+      "intro": "Use of the library and browser-based audio tools.",
+      "sections": [
+        [
+          "Service",
+          "Browse the library and use the BGM and SFX tools without registering an account. Playback and synthesis require JavaScript and a compatible browser."
+        ],
+        [
+          "Audio permissions",
+          "The audio use conditions page describes permission for library and generated audio. Check the rights to any outside materials you add."
+        ],
+        [
+          "Responsible use",
+          "Do not attack the service or disrupt it with excessive requests. Do not make false rights claims against other users or include unnecessary personal information about others in inquiries."
+        ],
+        [
+          "Practical limitations",
+          "Playback, downloads and monetization decisions can vary by browser, device and external platform. Features may change or become unavailable. Keep your important settings and exported audio separately. This notice does not exclude rights provided by applicable law."
+        ],
+        [
+          "Contact",
+          "Report errors, ask about permissions or submit rights inquiries to lbhl7585@naver.com. Include the exact sound and URL and steps to reproduce a problem."
+        ]
+      ]
+    }
+  },
+  "about": {
+    "ko": {
+      "title": "JYE SOUNDS 소개",
+      "intro": "영상과 게임을 만드는 창작자를 위한 오디오 라이브러리와 브라우저 제작 도구입니다.",
+      "sections": [
+        [
+          "세 가지 서비스",
+          "메인 사이트에서 효과음을 찾아 미리듣고 다운로드할 수 있습니다. SFX MAKER는 파형·피치·엔벨로프를 조절하는 효과음 신시사이저입니다. BGM MAKER는 칩튠 패턴과 환경음을 조절하고 WAV로 녹음하는 도구입니다."
+        ],
+        [
+          "제작 도구의 방식",
+          "현재 BGM·SFX 도구는 Web Audio 기반 합성과 프리셋·랜덤 변형을 사용합니다. 텍스트 프롬프트를 AI 모델로 전송해 생성하는 기능은 제공하지 않습니다."
+        ],
+        [
+          "운영 및 소통",
+          "서비스명: JYE SOUNDS. 공식 운영·라이선스 문의 이메일: lbhl7585@naver.com. 음원별 상세 페이지에서 파일 규격, 사용 예시와 이용조건을 확인해 주세요."
+        ]
+      ]
+    },
+    "en": {
+      "title": "About JYE SOUNDS",
+      "intro": "An audio library and browser tools for video and game creators.",
+      "sections": [
+        [
+          "Three services",
+          "The main library lets you find, preview and download sound effects. SFX MAKER synthesizes effects with waveform, pitch and envelope controls. BGM MAKER combines chiptune patterns and ambience and records the result as WAV."
+        ],
+        [
+          "How the tools work",
+          "The current BGM and SFX tools use Web Audio synthesis, presets and random variations. They do not send text prompts to an AI model to generate audio."
+        ],
+        [
+          "Contact",
+          "Service: JYE SOUNDS. Official service and license inquiries: lbhl7585@naver.com. Individual sound pages describe file specifications, usage examples and applicable conditions."
+        ]
+      ]
+    }
+  },
+  "contact": {
+    "ko": {
+      "title": "문의 및 권리 신고",
+      "intro": "공식 접수 이메일: lbhl7585@naver.com",
+      "sections": [
+        [
+          "일반 문의",
+          "기능 오류는 페이지 주소, 기기·브라우저 종류와 재현 순서를 적어 보내 주세요. 민감한 개인정보나 비밀번호는 보내지 마세요."
+        ],
+        [
+          "음원 라이선스와 권리 확인",
+          "음원 이름, 파일 주소, 사용 프로젝트, 확인하려는 이용 범위를 알려 주세요. 권리 침해 신고에는 원본 자료와 권리 관계를 설명하는 내용을 첨부해 주세요."
+        ],
+        [
+          "메일 작성과 발송",
+          "사이트의 문의 버튼은 사용 중인 메일 앱을 엽니다. 사이트 자체가 메일을 발송하거나 접수를 완료하지는 않습니다. 메일 앱에서 실제로 전송해 주세요. 메일 앱이 없으면 이메일 주소를 복사해 웹메일을 이용하세요."
+        ],
+        [
+          "개인정보",
+          "회신을 위한 이메일과 문의 내용만 제공해 주세요. 제출 자료의 처리·삭제 문의도 같은 주소로 접수할 수 있습니다."
+        ]
+      ]
+    },
+    "en": {
+      "title": "Contact and rights inquiries",
+      "intro": "Official inquiry email: lbhl7585@naver.com",
+      "sections": [
+        [
+          "Service questions",
+          "For an error, include the page URL, device, browser and steps to reproduce it. Do not send passwords or sensitive personal information."
+        ],
+        [
+          "License and rights questions",
+          "Include the sound name, file URL, project and intended use. For infringement reports, explain your rights and include supporting source materials."
+        ],
+        [
+          "Sending email",
+          "Inquiry buttons open your email application. The website does not send the message or confirm receipt. Complete sending in your mail app, or copy the address into your webmail service."
+        ],
+        [
+          "Personal information",
+          "Provide only the reply email and details needed to answer the question. Use the same address for requests about submitted materials or their deletion."
+        ]
+      ]
+    }
+  },
+  "guides": {
+    "ko": {
+      "title": "오디오 활용 가이드",
+      "intro": "라이브러리 효과음과 브라우저 제작 도구를 프로젝트에 사용하는 방법입니다.",
+      "sections": [
+        [
+          "효과음 선택",
+          "효과음을 원래 프로젝트의 대사·음악과 함께 들어 보고 장면에 맞는 길이와 질감인지 확인하세요. 단독 미리듣기 볼륨이 실제 프로젝트의 적절한 음량을 뜻하지는 않습니다."
+        ],
+        [
+          "자르기와 페이드",
+          "편집 도구에서 필요 없는 앞뒤 구간을 자르고 짧은 페이드를 적용하면 경계의 클릭을 줄이는 데 도움이 됩니다. 원본은 따로 보관하고 편집 사본을 사용하세요."
+        ],
+        [
+          "음량과 피크",
+          "대사가 묻히지 않도록 효과음 볼륨을 먼저 낮춘 뒤 천천히 올리세요. 순간 피크와 전체 음량은 다른 값입니다. 최종 파일을 헤드폰과 스피커에서 확인하고 프로젝트 전체의 클리핑을 점검하세요."
+        ],
+        [
+          "SFX 제작",
+          "프리셋 선택 → 피치·엔벨로프 조절 → 재생 확인 → WAV 다운로드 순서로 작업하세요. 고음질 옵션은 44.1kHz·16-bit, 레트로 옵션은 22.05kHz·8-bit입니다. 변형한 소리는 리셋으로 원본 프리셋으로 돌아갈 수 있습니다."
+        ],
+        [
+          "BGM 제작",
+          "트랙을 고르고 템포, 음높이, EQ와 환경음을 조절하세요. 녹음 버튼을 누른 뒤 정지·저장 버튼으로 WAV 저장을 요청합니다. 한 번의 녹음은 최대 2분이며, 필요한 구간만 녹음하면 메모리 사용을 줄일 수 있습니다."
+        ],
+        [
+          "프로젝트와 라이선스",
+          "Unity 등 프로젝트 설정에 맞게 mono/stereo와 샘플레이트를 확인하세요. 사이트의 이용허락이 플랫폼 자동 판정을 보증하지는 않습니다. 라이선스 페이지 주소와 사용한 파일 이름을 작업 기록에 함께 남겨 두세요."
+        ]
+      ]
+    },
+    "en": {
+      "title": "Audio workflow guide",
+      "intro": "Using library sounds and browser-generated audio in your projects.",
+      "sections": [
+        [
+          "Choose in context",
+          "Listen with the dialogue and music of the intended scene. A comfortable preview volume is not necessarily the correct level in your mix."
+        ],
+        [
+          "Trim and fade",
+          "Trim unwanted leading or trailing audio and use short fades to reduce boundary clicks. Keep the original and edit a copy."
+        ],
+        [
+          "Set levels",
+          "Start quietly and raise effects until they support the scene without masking dialogue. Peak level and overall loudness are different. Check the final mix on headphones and speakers and inspect it for clipping."
+        ],
+        [
+          "Make SFX",
+          "Choose a preset, edit pitch and envelope, audition it and export WAV. The high-quality option uses 44.1kHz/16-bit and the retro option uses 22.05kHz/8-bit. Reset returns a variation to its source preset."
+        ],
+        [
+          "Make BGM",
+          "Choose a track, set tempo, pitch, EQ and ambience, then record. Stop and save requests a WAV download. A recording is limited to 2 minutes. Recording only the section you need reduces memory use."
+        ],
+        [
+          "Project settings and permissions",
+          "Check mono/stereo and sample rate against your project settings. Site permission does not guarantee a platform’s automated decisions. Keep the license URL and sound filename in your project notes."
+        ]
+      ]
+    }
+  }
+}

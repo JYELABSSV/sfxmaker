@@ -1,3 +1,4 @@
+import { getSoundDuration } from '../audio/duration';
 import React from 'react';
 import { SFXParams, WaveType } from '../types/sfx';
 import { useTranslation } from '../i18n/LanguageContext';
@@ -27,11 +28,7 @@ export const SoundEditor: React.FC<SoundEditorProps> = ({ params, onChange }) =>
     ? params.melodyNotes!.reduce((sum, n) => sum + n.duration, 0)
     : 0;
 
-  const totalLength = (
-    hasMelody
-      ? melodyTotalTime + params.decayTime
-      : params.attackTime + params.sustainTime + params.decayTime
-  ).toFixed(2);
+  const totalLength = getSoundDuration(params).toFixed(2);
 
   // Shift whole melody pitch up/down
   const handleShiftMelodyPitch = (mult: number) => {
@@ -424,3 +421,4 @@ export const SoundEditor: React.FC<SoundEditorProps> = ({ params, onChange }) =>
     </div>
   );
 };
+

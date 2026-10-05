@@ -587,6 +587,7 @@ export function mutateParams(params: SFXParams): SFXParams {
 
   return {
     ...params,
+    sourcePresetId: params.sourcePresetId || (PRESETS.some(p => p.id === params.id) ? params.id : undefined),
     id: `custom_${Date.now().toString(36)}`,
     name: `${params.name} (변형)`,
     category: 'custom',
@@ -651,3 +652,4 @@ export function randomizeParams(): SFXParams {
     bitCrush,
   };
 }
+
